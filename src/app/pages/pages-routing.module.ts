@@ -9,13 +9,12 @@ import { Graphic1Component } from './graphic1/graphic1.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'dashboard',
     component: PagesComponent,
     children: [
-      { path: 'dashboard', component: DashboardComponent },
+      { path: '', component: DashboardComponent },
       { path: 'progress', component: ProgressComponent },
       { path: 'graphic1', component: Graphic1Component },
-      { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
     ],
   },
 ];
