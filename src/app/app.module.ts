@@ -13,6 +13,7 @@ import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { ProgressComponent } from './pages/progress/progress.component';
 import { Graphic1Component } from './pages/graphic1/graphic1.component';
+import { PagesComponent } from './pages/pages.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { Graphic1Component } from './pages/graphic1/graphic1.component';
     HeaderComponent,
     FooterComponent,
     ProgressComponent,
-    Graphic1Component
+    Graphic1Component,
+    PagesComponent
   ],
   imports: [
     BrowserModule,
