@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-import { BaseChartDirective } from 'ng2-charts';
-
 import { PagesRoutingModule } from './pages-routing.module';
 import { SharedModule } from '../shared/shared.module';
 
@@ -23,7 +21,6 @@ import { ComponentsModule } from '../components/components.module';
   imports: [
     CommonModule,
     RouterModule,
-    BaseChartDirective,
     SharedModule,
     PagesRoutingModule,
     ComponentsModule,

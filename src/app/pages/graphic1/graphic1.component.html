@@ -1,15 +1,16 @@
 <div class="row">
   <div class="col-4">
-    <div class="card">
-      <div class="card-body">
-        <h3>Sales</h3>
-        <canvas
-          baseChart
-          [data]="doughnutChartData"
-          [type]="doughnutChartType"
-        >
-        </canvas>
-      </div>
-    </div>
+    <app-doughnut title="Sales" [labels]="labels1" [data]="data1" [colors]="colors1"></app-doughnut>
+  </div>
+  <div class="col-4">
+    <app-doughnut title="Shopping" [labels]="labels2" [data]="data2" [colors]="colors2"></app-doughnut>
+  </div>
+</div>
+<div class="row">
+  <div class="col-4">
+    <app-doughnut title="Report" [labels]="labels3" [data]="data3"></app-doughnut>
+  </div>
+  <div class="col-4">
+    <app-doughnut title="Purchases" title="Report" [labels]="labels4" [data]="data4"></app-doughnut>
   </div>
 </div>
