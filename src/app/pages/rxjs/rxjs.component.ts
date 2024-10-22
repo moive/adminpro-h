@@ -8,7 +8,17 @@ import { Observable, retry } from 'rxjs';
 })
 export class RxjsComponent {
   constructor() {
-    const obs$ = new Observable((observer) => {
+
+
+    this.returnObservable().pipe(retry(1)).subscribe({
+      next: (value) => console.log('Subs: ', value),
+      error: (error) => console.error(error),
+      complete: () => console.info('Obs finished 🤙'),
+    });
+  }
+
+  returnObservable(): Observable<number>{
+    return new Observable<number>((observer) => {
       let i = -1;
       const interval = setInterval(() => {
         i++;
@@ -20,16 +30,9 @@ export class RxjsComponent {
         }
 
         if (i == 2) {
-          i = 0;
           observer.error('Syntax error');
         }
       }, 1000);
-    });
-
-    obs$.pipe(retry(1)).subscribe({
-      next: (value) => console.log('Subs: ', value),
-      error: (error) => console.error(error),
-      complete: () => console.info('Obs finished 🤙'),
     });
   }
 }
