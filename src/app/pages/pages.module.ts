@@ -12,6 +12,7 @@ import { Graphic1Component } from './graphic1/graphic1.component';
 import { ComponentsModule } from '../components/components.module';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PromisesComponent } from './promises/promises.component';
+import { RxjsComponent } from './rxjs/rxjs.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { PromisesComponent } from './promises/promises.component';
     PagesComponent,
     AccountSettingsComponent,
     PromisesComponent,
+    RxjsComponent,
   ],
   imports: [
     CommonModule,
