@@ -7,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PromisesComponent implements OnInit {
   ngOnInit(): void {
-    this.initPromise();
+    this.getUsers().then((users) => console.log(users));
+    // this.initPromise();
   }
 
-  initPromise(): void{
+  initPromise(): void {
     const promise = new Promise((resolve, reject) => {
       if (false) {
         resolve('hello world');
@@ -27,5 +28,14 @@ export class PromisesComponent implements OnInit {
         console.error(`Error: ${err}`);
       });
     console.log('End promise');
+  }
+
+  getUsers() {
+    return new Promise((resolve) => {
+      const url = 'https://reqres.in/api/users';
+      fetch(url)
+        .then((res) => res.json())
+        .then((body) => resolve(body.data));
+    });
   }
 }
