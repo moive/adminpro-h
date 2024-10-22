@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, retry } from 'rxjs';
 
 @Component({
   selector: 'app-rxjs',
@@ -19,11 +19,14 @@ export class RxjsComponent {
           observer.complete();
         }
 
-        if (i == 2) observer.error('Syntax error');
+        if (i == 2) {
+          i = 0;
+          observer.error('Syntax error');
+        }
       }, 1000);
     });
 
-    obs$.subscribe({
+    obs$.pipe(retry(1)).subscribe({
       next: (value) => console.log('Subs: ', value),
       error: (error) => console.error(error),
       complete: () => console.info('Obs finished 🤙'),
