@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-register',
@@ -10,7 +11,10 @@ export class RegisterComponent {
   public registerForm;
   public formSubmitted = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+  ) {
     this.registerForm = this.fb.group(
       {
         name: ['', [Validators.required, Validators.minLength(3)]],
@@ -22,7 +26,7 @@ export class RegisterComponent {
         ],
         terms: [false, [Validators.required]],
       },
-      { validators: this.passwordsEqual('password', 'confirmPassword') }
+      { validators: this.passwordsEqual('password', 'confirmPassword') },
     );
   }
 
@@ -30,11 +34,17 @@ export class RegisterComponent {
     this.formSubmitted = true;
     // console.log(this.registerForm.value);
     console.log(this.registerForm);
-    if (this.registerForm.valid) {
-      console.log('Posted form');
-    } else {
-      console.log('Invalid form');
-    }
+    if (this.registerForm.invalid) return;
+
+    this.userService.createUser(this.registerForm.value).subscribe({
+      next: (res) => {
+        console.log('User created');
+        console.log(res);
+      },
+      error: (err) => {
+        console.warn(err);
+      },
+    });
   }
 
   fieldValid(field: string): boolean {
