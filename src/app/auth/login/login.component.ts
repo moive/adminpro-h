@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertService, UserService } from '../../services';
+import { AlertService, LocalStorageService, UserService } from '../../services';
 
 @Component({
   selector: 'app-login',
@@ -16,9 +16,25 @@ export class LoginComponent {
     private router: Router,
     private fb: FormBuilder,
     private userService: UserService,
-    public alertService: AlertService,
+    private alertService: AlertService,
+    private localStorageService: LocalStorageService,
   ) {
-    this.loginForm = this.fb.nonNullable.group({
+    this.loginForm = this.createLoginForm();
+  }
+  login() {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
+
+    this.userService.login(this.loginForm.getRawValue()).subscribe({
+      next: () => this.handleLoginSuccess(),
+      error: (err) => this.handleLogingError(err),
+    });
+  }
+
+  private createLoginForm(): FormGroup {
+    return this.fb.nonNullable.group({
       email: [
         localStorage.getItem('email') ?? '',
         [Validators.required, Validators.email],
@@ -27,31 +43,27 @@ export class LoginComponent {
       remember: [localStorage.getItem('remember') === 'true' || false],
     });
   }
-  login() {
-    console.log(this.loginForm.value);
-    if (this.loginForm.invalid) return;
-    this.userService.login(this.loginForm.getRawValue()).subscribe({
-      next: (res) => {
-        if (this.loginForm.get('remember')?.value) {
-          localStorage.setItem(
-            'email',
-            this.loginForm.get('email')?.value ?? '',
-          );
-          localStorage.setItem(
-            'remember',
-            String(this.loginForm.get('remember')?.value),
-          );
-        } else {
-          localStorage.removeItem('email');
-          localStorage.removeItem('remember');
-        }
-        console.log('Login successful');
-        this.router.navigateByUrl('/');
-      },
-      error: (err) => {
-        console.warn(err);
-        this.alertService.error('Error', err.error.msg);
-      },
-    });
+
+  private handleLoginSuccess(): void {
+    this.handleRememberMe();
+    this.router.navigateByUrl('/');
+  }
+
+  private handleLogingError(err: any): void {
+    const errorMessage = err?.error?.msg || 'Error logging in';
+    this.alertService.error('Error', errorMessage);
+  }
+
+  private handleRememberMe(): void {
+    const remember = this.loginForm.get('remember')?.value;
+    const email = this.loginForm.get('email')?.value;
+
+    if (remember) {
+      this.localStorageService.set('email', email ?? '');
+      this.localStorageService.set('remember', 'true');
+    } else {
+      this.localStorageService.remove('email');
+      this.localStorageService.remove('remember');
+    }
   }
 }
