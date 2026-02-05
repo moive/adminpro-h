@@ -31,7 +31,7 @@ export class LoginComponent {
     this.userService.login(this.loginForm.getRawValue()).subscribe({
       next: (res) => {
         console.log('Login successful');
-        console.log(res);
+        // console.log(res);
         this.router.navigateByUrl('/');
       },
       error: (err) => {
