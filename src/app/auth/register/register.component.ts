@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
+import { AlertService } from '../../services/alert.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -14,6 +16,8 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
+    private alertService: AlertService,
+    private router: Router,
   ) {
     this.registerForm = this.fb.group(
       {
@@ -40,9 +44,11 @@ export class RegisterComponent {
       next: (res) => {
         console.log('User created');
         console.log(res);
+        this.router.navigateByUrl('/login');
       },
       error: (err) => {
         console.warn(err);
+        this.alertService.error('Error', err.error.msg);
       },
     });
   }
