@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { SettingsService } from '../../services/settings.service';
+import { SettingsService } from '../../services';
 
 @Component({
   selector: 'app-account-settings',
   templateUrl: './account-settings.component.html',
   styles: `
-    #themecolors .selector{cursor:pointer}
+    #themecolors .selector {
+      cursor: pointer;
+    }
   `,
 })
 export class AccountSettingsComponent implements OnInit {

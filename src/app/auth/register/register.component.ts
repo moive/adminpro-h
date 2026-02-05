@@ -7,8 +7,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { UserService } from '../../services/user.service';
-import { AlertService } from '../../services/alert.service';
+import { AlertService, UserService } from '../../services';
 import { Router } from '@angular/router';
 
 @Component({
