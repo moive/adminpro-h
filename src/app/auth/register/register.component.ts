@@ -1,5 +1,12 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { AlertService } from '../../services/alert.service';
 import { Router } from '@angular/router';
@@ -19,7 +26,7 @@ export class RegisterComponent {
     private alertService: AlertService,
     private router: Router,
   ) {
-    this.registerForm = this.fb.group(
+    this.registerForm = this.fb.nonNullable.group(
       {
         name: ['', [Validators.required, Validators.minLength(3)]],
         email: ['test100@test.com', [Validators.required, Validators.email]],
@@ -40,7 +47,7 @@ export class RegisterComponent {
     console.log(this.registerForm);
     if (this.registerForm.invalid) return;
 
-    this.userService.createUser(this.registerForm.value).subscribe({
+    this.userService.createUser(this.registerForm.getRawValue()).subscribe({
       next: (res) => {
         console.log('User created');
         console.log(res);
@@ -71,18 +78,49 @@ export class RegisterComponent {
       return false;
     }
   }
-  passwordsEqual(pass1Name: string, pass2Name: string) {
-    return (formGroup: FormGroup) => {
-      const pass1Control = formGroup.get(pass1Name);
-      const pass2Control = formGroup.get(pass2Name);
-
-      if (pass1Control?.value === pass2Control?.value) {
-        pass2Control?.setErrors(null);
+  passwordsEqual(pass1Name: string, pass2Name: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!(control instanceof FormGroup)) {
         return null;
-      } else {
-        pass2Control?.setErrors({ notEqual: true });
-        return { noEsIgual: true };
       }
+
+      const pass1Control = control.get(pass1Name);
+      const pass2Control = control.get(pass2Name);
+
+      if (!pass1Control || !pass2Control) {
+        return null;
+      }
+
+      if (pass1Control.value === pass2Control.value) {
+        // 🔥 No borrar otros errores
+        if (pass2Control.hasError('notEqual')) {
+          const errors = { ...pass2Control.errors };
+          delete errors['notEqual'];
+          pass2Control.setErrors(Object.keys(errors).length ? errors : null);
+        }
+        return null;
+      }
+
+      pass2Control.setErrors({
+        ...pass2Control.errors,
+        notEqual: true,
+      });
+
+      return { noEsIgual: true };
     };
   }
+  // passwordsEqual(pass1Name: string, pass2Name: string) {
+  //   return (formGroup: FormGroup) => {
+  //     const pass1Control = formGroup.get(pass1Name);
+  //     const pass2Control = formGroup.get(pass2Name);
+
+  //     if (pass1Control?.value === pass2Control?.value) {
+  //       pass2Control?.setErrors(null);
+  //       return null;
+  //     } else {
+  //       pass2Control?.setErrors({ notEqual: true });
+  //       return { noEsIgual: true };
+  //     }
+  //   };
+  // }
 }
