@@ -20,9 +20,12 @@ export class LoginComponent {
     public alertService: AlertService,
   ) {
     this.loginForm = this.fb.nonNullable.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: [
+        localStorage.getItem('email') ?? '',
+        [Validators.required, Validators.email],
+      ],
       password: ['', Validators.required],
-      remember: [false],
+      remember: [localStorage.getItem('remember') === 'true' || false],
     });
   }
   login() {
@@ -30,8 +33,20 @@ export class LoginComponent {
     if (this.loginForm.invalid) return;
     this.userService.login(this.loginForm.getRawValue()).subscribe({
       next: (res) => {
+        if (this.loginForm.get('remember')?.value) {
+          localStorage.setItem(
+            'email',
+            this.loginForm.get('email')?.value ?? '',
+          );
+          localStorage.setItem(
+            'remember',
+            String(this.loginForm.get('remember')?.value),
+          );
+        } else {
+          localStorage.removeItem('email');
+          localStorage.removeItem('remember');
+        }
         console.log('Login successful');
-        // console.log(res);
         this.router.navigateByUrl('/');
       },
       error: (err) => {
