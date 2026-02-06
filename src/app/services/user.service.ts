@@ -51,4 +51,8 @@ export class UserService {
       }),
     );
   }
+
+  logout() {
+    localStorage.removeItem('token');
+  }
 }

@@ -26,7 +26,13 @@ export class LoginComponent implements AfterViewInit {
     this.loginForm = this.createLoginForm();
   }
   ngAfterViewInit(): void {
-    this.googleInit();
+    if (typeof google !== 'undefined') {
+      this.googleInit();
+    } else {
+      window.addEventListener('load', () => {
+        this.googleInit();
+      });
+    }
   }
   private googleInit() {
     google.accounts.id.initialize({
