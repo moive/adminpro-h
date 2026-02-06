@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { UserService } from '../../services';
 import { Router } from '@angular/router';
 
@@ -9,9 +9,14 @@ declare const google: any;
   templateUrl: './header.component.html',
   styles: ``,
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   userService = inject(UserService);
   router = inject(Router);
+
+  imgUrl: string = '';
+  ngOnInit(): void {
+    this.imgUrl = this.userService.user?.imageUrl || '';
+  }
   logout() {
     this.userService.logout();
     this.revokeGoogleSession();
