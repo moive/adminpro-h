@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { catchError, map, Observable, of, tap } from 'rxjs';
+
 import type { ILoginForm, IRegisterForm } from '../interfaces';
 import { environment } from '../../environments/environment';
-import { tap } from 'rxjs';
 
 const baseUrl = environment.baseUrl;
 @Injectable({
@@ -11,6 +12,21 @@ const baseUrl = environment.baseUrl;
 })
 export class UserService {
   constructor(private http: HttpClient) {}
+
+  validateToken(): Observable<boolean> {
+    const token = localStorage.getItem('token') || '';
+    return this.http
+      .get(`${baseUrl}/login/renew`, {
+        headers: { 'x-token': token },
+      })
+      .pipe(
+        tap((res: any) => {
+          localStorage.setItem('token', res['token']);
+        }),
+        map(() => true),
+        catchError((error) => of(false)),
+      );
+  }
 
   createUser(formData: IRegisterForm) {
     return this.http.post(`${baseUrl}/users`, formData).pipe(
