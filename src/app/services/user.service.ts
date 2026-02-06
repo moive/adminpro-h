@@ -5,23 +5,29 @@ import { catchError, map, Observable, of, tap } from 'rxjs';
 
 import type { ILoginForm, IRegisterForm } from '../interfaces';
 import { environment } from '../../environments/environment';
+import { LocalStorageService } from './local-storage.service';
 
 const baseUrl = environment.baseUrl;
+const TOKEN_KEY = 'token';
+
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private localStorageSevice: LocalStorageService,
+  ) {}
 
   validateToken(): Observable<boolean> {
-    const token = localStorage.getItem('token') || '';
+    const token = this.localStorageSevice.get(TOKEN_KEY) || '';
     return this.http
       .get(`${baseUrl}/login/renew`, {
         headers: { 'x-token': token },
       })
       .pipe(
         tap((res: any) => {
-          localStorage.setItem('token', res['token']);
+          this.localStorageSevice.set(TOKEN_KEY, res['token']);
         }),
         map(() => true),
         catchError((error) => of(false)),
@@ -31,7 +37,7 @@ export class UserService {
   createUser(formData: IRegisterForm) {
     return this.http.post(`${baseUrl}/users`, formData).pipe(
       tap((res: any) => {
-        localStorage.setItem('token', res['token']);
+        this.localStorageSevice.set(TOKEN_KEY, res['token']);
       }),
     );
   }
@@ -39,7 +45,7 @@ export class UserService {
   login(formData: ILoginForm) {
     return this.http.post(`${baseUrl}/login`, formData).pipe(
       tap((res: any) => {
-        localStorage.setItem('token', res['token']);
+        this.localStorageSevice.set(TOKEN_KEY, res['token']);
       }),
     );
   }
@@ -47,12 +53,12 @@ export class UserService {
   loginGoogle(token: string) {
     return this.http.post(`${baseUrl}/login/google`, { token }).pipe(
       tap((res: any) => {
-        localStorage.setItem('token', res['token']);
+        this.localStorageSevice.set(TOKEN_KEY, res['token']);
       }),
     );
   }
 
   logout() {
-    localStorage.removeItem('token');
+    this.localStorageSevice.remove(TOKEN_KEY);
   }
 }
