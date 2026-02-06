@@ -6,6 +6,7 @@ import { catchError, map, Observable, of, tap } from 'rxjs';
 import type { ILoginForm, IRegisterForm } from '../interfaces';
 import { environment } from '../../environments/environment';
 import { LocalStorageService } from './local-storage.service';
+import { User } from '../models/user.model';
 
 const baseUrl = environment.baseUrl;
 const TOKEN_KEY = 'token';
@@ -14,6 +15,7 @@ const TOKEN_KEY = 'token';
   providedIn: 'root',
 })
 export class UserService {
+  user: User | null = null;
   constructor(
     private http: HttpClient,
     private localStorageSevice: LocalStorageService,
@@ -27,6 +29,11 @@ export class UserService {
       })
       .pipe(
         tap((res: any) => {
+          console.log(res);
+          const { name, email, img, google, role, uid } = res.user;
+          this.user = new User(name, email, '', img, google, role, uid);
+          this.user?.printUser();
+
           this.localStorageSevice.set(TOKEN_KEY, res['token']);
         }),
         map(() => true),

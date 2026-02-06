@@ -6,6 +6,10 @@ export class User {
     public img?: string,
     public google?: boolean,
     public role?: string,
-    public uid?: string
+    public uid?: string,
   ) {}
+
+  printUser() {
+    console.log('Name: ', this.name);
+  }
 }
