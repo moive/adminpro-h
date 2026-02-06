@@ -70,6 +70,14 @@
           "defaultConfiguration": "production"
         },
         "serve": {
+          "options": {
+            "ssl": false,
+            "host": "localhost",
+            "port": 4200,
+            "headers": {
+              "Cross-Origin-Opener-Policy": "same-origin-allow-popups"
+            }
+          },
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {

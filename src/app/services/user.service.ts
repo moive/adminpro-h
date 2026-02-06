@@ -27,4 +27,12 @@ export class UserService {
       }),
     );
   }
+
+  loginGoogle(token: string) {
+    return this.http.post(`${baseUrl}/login/google`, { token }).pipe(
+      tap((res: any) => {
+        localStorage.setItem('token', res['token']);
+      }),
+    );
+  }
 }

@@ -1,14 +1,18 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertService, LocalStorageService, UserService } from '../../services';
+
+declare const google: any;
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements AfterViewInit {
+  @ViewChild('googleBtn') googleBtn!: ElementRef;
+
   public formSubmitted = false;
 
   public loginForm;
@@ -21,6 +25,37 @@ export class LoginComponent {
   ) {
     this.loginForm = this.createLoginForm();
   }
+  ngAfterViewInit(): void {
+    this.googleInit();
+  }
+  private googleInit() {
+    google.accounts.id.initialize({
+      client_id:
+        '133188583851-gev25pdqvqsk1698upbcbo9a1vbbmc3v.apps.googleusercontent.com',
+      callback: (response: any) => this.handleCredentialResponse(response),
+      auto_select: false,
+      cancel_on_tap_outside: true,
+      context: 'signin',
+      ux_mode: 'popup', // this fix CORS
+      itp_support: true,
+    });
+    google.accounts.id.renderButton(
+      // document.getElementById('buttonDiv'),
+      this.googleBtn.nativeElement,
+      {
+        theme: 'outline',
+        size: 'large',
+      },
+    );
+  }
+
+  handleCredentialResponse(response: any) {
+    // console.log('Encoded JWT ID token: ' + response.credential);
+    this.userService.loginGoogle(response.credential).subscribe((res) => {
+      console.log({ login: res });
+    });
+  }
+
   login() {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
