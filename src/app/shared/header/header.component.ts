@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { UserService } from '../../services';
 import { Router } from '@angular/router';
+import { User } from '../../models/user.model';
 
 declare const google: any;
 
@@ -13,9 +14,9 @@ export class HeaderComponent implements OnInit {
   userService = inject(UserService);
   router = inject(Router);
 
-  imgUrl: string = '';
+  user: User | null = null;
   ngOnInit(): void {
-    this.imgUrl = this.userService.user?.imageUrl || '';
+    this.user = this.userService.user;
   }
   logout() {
     this.userService.logout();
