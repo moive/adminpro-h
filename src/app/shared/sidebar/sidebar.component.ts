@@ -18,4 +18,19 @@ export class SidebarComponent {
     this.menuItems = this.sidebarService.menu;
     this.user = this.userService.user;
   }
+
+  toggleMenu(event: Event): void {
+    event.preventDefault();
+    const target = event.currentTarget as HTMLElement;
+    const parentLi = target.parentElement;
+    const submenu = parentLi?.querySelector('.collapse');
+
+    if (submenu) {
+      submenu.classList.toggle('show');
+      target.setAttribute(
+        'aria-expanded',
+        target.getAttribute('aria-expanded') === 'true' ? 'false' : 'true',
+      );
+    }
+  }
 }
