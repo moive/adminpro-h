@@ -17,7 +17,7 @@ export class SidebarService {
       ],
     },
     {
-      title: 'Maintenance',
+      title: 'Management',
       icon: 'mdi mdi-folder-lock-open',
       subMenus: [
         { title: 'Users', url: 'users' },

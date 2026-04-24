@@ -14,6 +14,9 @@ export class User {
   ) {}
 
   get imageUrl() {
+    if (!this.img) {
+      return `${baseUrl}/upload/users/no-image`;
+    }
     if (this.img?.includes('https')) return this.img;
 
     if (this.img) return `${baseUrl}/upload/users/${this.img}`;
