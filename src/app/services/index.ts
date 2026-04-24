@@ -1,3 +1,5 @@
+export { FileUploadService } from './file-upload.service';
+
 export { AlertService } from './alert.service';
 export { LocalStorageService } from './local-storage.service';
 export { SettingsService } from './settings.service';

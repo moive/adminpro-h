@@ -49,18 +49,18 @@
     </div>
   </div>
 
-  <!-- <div class="col-md-6">
+  <div class="col-md-6">
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Avatar</h4>
         <h6 class="card-subtitle">Photo of user</h6>
 
         <div class="text-center">
-          <img *ngIf="!imgTemp" [src]="user?.imagenUrl" class="img-avatar" />
+          <img *ngIf="!imgTemp" [src]="user.imageUrl" class="img-avatar" />
           <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar" />
         </div>
 
-        <input type="file" (change)="cambiarImagen($event.target.files[0])" />
+        <input type="file" (change)="onChangeImage($event)" />
 
         <br />
         <br />
@@ -68,13 +68,13 @@
         <button
           type="button"
           class="btn btn-success btn-block waves-effect waves-light m-r-10"
-          [disabled]="!imagenSubir"
-          (click)="subirImagen()"
+          [disabled]="!selectedFile"
+          (click)="uploadImage()"
         >
           <i class="fa fa-save"></i>
-          Cambiar imagen
+          Change image
         </button>
       </div>
     </div>
-  </div> -->
+  </div>
 </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../../services';
+import { FileUploadService, UserService } from '../../services';
 import { User } from '../../models/user.model';
 
 @Component({
@@ -10,11 +10,14 @@ import { User } from '../../models/user.model';
 })
 export class ProfileComponent implements OnInit {
   public profileForm!: FormGroup;
-  user!: User;
+  public user!: User;
+  public selectedFile!: File;
+  public imgTemp: string | null = null;
 
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
+    private fileUploadService: FileUploadService,
   ) {
     this.user = this.userService.user;
   }
@@ -37,5 +40,29 @@ export class ProfileComponent implements OnInit {
       this.user.name = name;
       this.user.email = email;
     });
+  }
+
+  onChangeImage(event: Event) {
+    const input = event.target as HTMLInputElement;
+
+    if (!input.files || input.files.length === 0) {
+      this.imgTemp = null;
+      return;
+    }
+    const file = input.files[0];
+    this.selectedFile = file;
+
+    const reader = new FileReader();
+    const url64 = reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      this.imgTemp = reader.result as string;
+    };
+  }
+
+  uploadImage() {
+    this.fileUploadService
+      .updatedPhoto(this.selectedFile, 'users', this.user.uid!)
+      .then((img) => (this.user.img = img));
   }
 }
