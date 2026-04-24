@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FileUploadService, UserService } from '../../services';
 import { User } from '../../models/user.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-profile',
@@ -35,11 +36,15 @@ export class ProfileComponent implements OnInit {
 
   updatedProfile(): void {
     console.log(this.profileForm.value);
-    this.userService.udatedProfile(this.profileForm.value).subscribe(() => {
-      const { name, email } = this.profileForm.value;
-      this.user.name = name;
-      this.user.email = email;
-    });
+    this.userService.udatedProfile(this.profileForm.value).subscribe(
+      () => {
+        const { name, email } = this.profileForm.value;
+        this.user.name = name;
+        this.user.email = email;
+        Swal.fire('Success', 'User updated', 'success');
+      },
+      (err) => Swal.fire('Error', err.error.msg, 'error'),
+    );
   }
 
   onChangeImage(event: Event) {
@@ -63,6 +68,9 @@ export class ProfileComponent implements OnInit {
   uploadImage() {
     this.fileUploadService
       .updatedPhoto(this.selectedFile, 'users', this.user.uid!)
-      .then((img) => (this.user.img = img));
+      .then((img) => {
+        this.user.img = img;
+        Swal.fire('Success', 'Image user updated', 'success');
+      });
   }
 }
