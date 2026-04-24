@@ -11,6 +11,7 @@ import { Graphic1Component } from './graphic1/graphic1.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PromisesComponent } from './promises/promises.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,11 @@ const routes: Routes = [
         data: { title: 'Promises' },
       },
       { path: 'rxjs', component: RxjsComponent, data: { title: 'Rxjs' } },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        data: { title: 'Profile' },
+      },
     ],
   },
 ];
