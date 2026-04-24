@@ -37,7 +37,7 @@ export class LoginComponent implements AfterViewInit {
   private googleInit() {
     google.accounts.id.initialize({
       client_id:
-        '133188583851-gev25pdqvqsk1698upbcbo9a1vbbmc3v.apps.googleusercontent.com',
+        '813156350905-ku0b4n8ph4mll8md55m897je0qkekne3.apps.googleusercontent.com',
       callback: (response: any) => this.handleCredentialResponse(response),
       auto_select: false,
       cancel_on_tap_outside: true,
