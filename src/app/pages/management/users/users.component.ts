@@ -28,6 +28,7 @@ export class UsersComponent implements OnInit {
   }
 
   loadUsers() {
+    this.loading = true;
     this.userService.loadUsers(this.from).subscribe(({ total, users }) => {
       this.totalUsers = total;
 

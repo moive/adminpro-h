@@ -12,7 +12,7 @@
   </div>
 </div>
 
-<div class="row animated fadeIn fast">
+<div class="row animated fadeIn fast" *ngIf="loading">
   <div class="col-12">
     <div class="alert alert-info text-center" role="alert">
       <h4 class="alert-heading">Loading...</h4>
@@ -47,6 +47,7 @@
                     [src]="user.imageUrl"
                     alt="Avatar user"
                     class="avatar cursor"
+                    width="20"
                     (click)="openModal(user)"
                   />
                 </td>
