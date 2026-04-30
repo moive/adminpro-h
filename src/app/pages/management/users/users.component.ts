@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SearchService, UserService } from '../../../services';
 import { User } from '../../../models/user.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-users',
@@ -50,7 +51,40 @@ export class UsersComponent implements OnInit {
     //
   }
   removeUser(user: User) {
-    //
+    if (user.uid === this.userService.uid) {
+      Swal.fire('Error', 'You cannot delete yourself', 'error');
+      return;
+    }
+
+    Swal.fire({
+      title: `Are you sure of deleting of the user ${user.name}?`,
+      text: "You won't be able to revert this!",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed)
+        this.searchService.removeUser(user).subscribe({
+          next: () => {
+            this.loadUsers();
+            Swal.fire({
+              title: 'Deleted!',
+              text: `User ${user.name} has been deleted.`,
+              icon: 'success',
+            });
+          },
+          error: (err) => {
+            console.log(err);
+            Swal.fire({
+              title: 'Error',
+              text: err.error.msg,
+              icon: 'error',
+            });
+          },
+        });
+    });
   }
   changePage(value: number) {
     this.from += value;
