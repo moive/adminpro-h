@@ -26,3 +26,26 @@
   border-radius: 100%;
   width: 50px;
 }
+
+.fast {
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+}
+.background-modal {
+  background-color: rgba(0, 0, 0, 0.4);
+  left: 0px;
+  height: 100%;
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  z-index: 9999;
+}
+.hidden {
+  display: none;
+}
+.modal-header {
+  .close {
+    padding: 0.5rem;
+    cursor: pointer;
+  }
+}

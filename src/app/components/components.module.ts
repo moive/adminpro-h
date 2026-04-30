@@ -6,10 +6,11 @@ import { BaseChartDirective } from 'ng2-charts';
 
 import { IncreaseComponent } from './increase/increase.component';
 import { DoughnutComponent } from './doughnut/doughnut.component';
+import { ModalImageComponent } from './modal-image/modal-image.component';
 
 @NgModule({
-  declarations: [IncreaseComponent, DoughnutComponent],
+  declarations: [IncreaseComponent, DoughnutComponent, ModalImageComponent],
   imports: [CommonModule, FormsModule, BaseChartDirective],
-  exports: [IncreaseComponent, DoughnutComponent],
+  exports: [IncreaseComponent, DoughnutComponent, ModalImageComponent],
 })
 export class ComponentsModule {}
