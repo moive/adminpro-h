@@ -59,4 +59,8 @@ export class SearchService {
 
     return this.http.delete(url, this.headers);
   }
+
+  updateUser(user: User) {
+    return this.http.put(`${base_url}/users/${user.uid}`, user, this.headers);
+  }
 }

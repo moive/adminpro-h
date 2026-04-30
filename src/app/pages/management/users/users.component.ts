@@ -48,7 +48,7 @@ export class UsersComponent implements OnInit {
     //
   }
   onChangeRole(user: User) {
-    //
+    this.searchService.updateUser(user).subscribe((res) => console.log(res));
   }
   removeUser(user: User) {
     if (user.uid === this.userService.uid) {
