@@ -6,6 +6,8 @@
           type="text"
           class="form-control"
           placeholder="Enter User to Search..."
+          (keyup)="search(txtTerm.value)"
+          #txtTerm
         />
       </div>
     </div>
@@ -49,9 +51,14 @@
                     class="avatar cursor"
                     width="20"
                     (click)="openModal(user)"
+                    [attr.referrerpolicy]="
+                      isExternal(user.imageUrl) ? 'no-referrer' : null
+                    "
                   />
                 </td>
-                <td>{{ user.email }}</td>
+                <td>
+                  {{ user.email }}
+                </td>
                 <td>{{ user.name }}</td>
 
                 <td>
@@ -89,8 +96,7 @@
           </table>
         </div>
 
-        <div>
-          <!-- <div *ngIf="txtTermino.value.length === 0"> -->
+        <div *ngIf="txtTerm.value.length === 0">
           <button
             (click)="changePage(-5)"
             class="btn btn-secondary"

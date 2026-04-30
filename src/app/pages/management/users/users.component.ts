@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../../services';
+import { SearchService, UserService } from '../../../services';
 import { User } from '../../../models/user.model';
 
 @Component({
@@ -10,6 +10,7 @@ import { User } from '../../../models/user.model';
 export class UsersComponent implements OnInit {
   public totalUsers: number = 0;
   public users: User[] = [];
+  public usersTemp: User[] = [];
   public loading: boolean = true;
 
   public from: number = 0;
@@ -22,7 +23,11 @@ export class UsersComponent implements OnInit {
     return this.from + 5 >= this.totalUsers;
   }
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private searchService: SearchService,
+  ) {}
+
   ngOnInit(): void {
     this.loadUsers();
   }
@@ -32,7 +37,8 @@ export class UsersComponent implements OnInit {
     this.userService.loadUsers(this.from).subscribe(({ total, users }) => {
       this.totalUsers = total;
 
-      users.length !== 0 && (this.users = users);
+      this.users = users;
+      this.usersTemp = users;
       this.loading = false;
     });
   }
@@ -55,5 +61,37 @@ export class UsersComponent implements OnInit {
       this.from -= value;
     }
     this.loadUsers();
+  }
+
+  search(q: string) {
+    if (q.length === 0) {
+      this.users = this.usersTemp;
+      return;
+    }
+
+    this.searchService.search('users', q).subscribe((users) => {
+      this.users = users;
+    });
+  }
+
+  isExternal(url: string): boolean {
+    if (!url) return false;
+
+    // 🔹 1. URLs relativas (internas)
+    if (url.startsWith('/')) return false;
+
+    try {
+      const parsed = new URL(url);
+
+      // 🔹 2. mismo hostname (aunque cambie puerto)
+      if (parsed.hostname === window.location.hostname) {
+        return false;
+      }
+
+      // 🔹 3. todo lo demás = externo
+      return true;
+    } catch {
+      return false;
+    }
   }
 }

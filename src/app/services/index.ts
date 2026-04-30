@@ -1,3 +1,4 @@
+export { SearchService } from './search.service';
 export { FileUploadService } from './file-upload.service';
 
 export { AlertService } from './alert.service';
