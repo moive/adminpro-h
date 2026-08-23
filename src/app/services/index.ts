@@ -7,3 +7,4 @@ export { SettingsService } from './settings.service';
 export { SidebarService } from './sidebar.service';
 export { UserService } from './user.service';
 export { ModalImageService } from './modal-image.service';
+export { HospitalService } from './hospital.service';

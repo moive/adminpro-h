@@ -12,7 +12,7 @@
   </div>
 </div>
 
-<div class="row animated fadeIn fast">
+<div class="row animated fadeIn fast" *ngIf="loading">
   <div class="col-12">
     <div class="alert alert-info text-center">
       <h4 class="alert-heading">Loading</h4>
@@ -26,7 +26,7 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Hospitals</h4>
+        <h4 class="card-title">Hospitals ({{ totalHospitals }})</h4>
         <h6 class="card-subtitle">Users registered in my application</h6>
         <div class="table-responsive">
           <table class="table table-bordered">
@@ -38,13 +38,35 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr *ngFor="let hospital of hospitals">
                 <td>
                   <img src="" alt="" />
                 </td>
-                <td><input type="text" class="form-control" /></td>
+                <td>
+                  <input
+                    [disabled]="editingHospital !== hospital"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="hospital.name"
+                  />
+                </td>
                 <td class="text-nowrap text-center">
-                  <a href="#" data-toggle="tooltip" data-original-title="Edit">
+                  <a
+                    *ngIf="editingHospital !== hospital"
+                    href="#"
+                    data-toggle="tooltip"
+                    data-original-title="Edit"
+                    (click)="editHospital(hospital); $event.preventDefault()"
+                  >
+                    <i class="fa fa-edit text-inverse m-r-10"></i>
+                  </a>
+                  <a
+                    *ngIf="editingHospital === hospital"
+                    href="#"
+                    data-toggle="tooltip"
+                    data-original-title="Save"
+                    (click)="saveHospitl(hospital); $event.preventDefault()"
+                  >
                     <i class="fa fa-save text-inverse m-r-10"></i>
                   </a>
                   <a href="#" data-toggle="tooltip" data-original-title="Trash">
@@ -56,9 +78,9 @@
           </table>
         </div>
 
-        <button class="btn btn-secondary">Previous</button>
+        <!-- <button class="btn btn-secondary">Previous</button>
         &nbsp;
-        <button class="btn btn-secondary">Next</button>
+        <button class="btn btn-secondary">Next</button> -->
       </div>
     </div>
   </div>
