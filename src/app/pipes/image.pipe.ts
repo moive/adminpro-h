@@ -7,7 +7,10 @@ const baseUrl = environment.baseUrl;
   name: 'image',
 })
 export class ImagePipe implements PipeTransform {
-  transform(img: string, type: 'users' | 'hospitals' | 'doctors'): string {
+  transform(
+    img: string | undefined,
+    type: 'users' | 'hospitals' | 'doctors',
+  ): string {
     if (!img) {
       return `${baseUrl}/upload/users/no-image`;
     }
