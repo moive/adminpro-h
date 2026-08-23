@@ -32,15 +32,19 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th>Picture</th>
+                <th class="w100">Picture</th>
                 <th>Name</th>
                 <th class="text-nowrap">Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let hospital of hospitals">
-                <td>
-                  <img src="" alt="" />
+                <td class="text-center">
+                  <img
+                    class="avatar"
+                    [src]="hospital.img | image: 'hospitals'"
+                    [alt]="hospital.name"
+                  />
                 </td>
                 <td>
                   <input
