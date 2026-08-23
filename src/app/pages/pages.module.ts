@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { PagesRoutingModule } from './pages-routing.module';
 import { SharedModule } from '../shared/shared.module';
+import { PipesModule } from '../pipes/pipes.module';
 
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -39,6 +40,7 @@ import { HospitalsComponent } from './management/hospitals/hospitals.component';
     SharedModule,
     PagesRoutingModule,
     ComponentsModule,
+    PipesModule,
   ],
   exports: [
     DashboardComponent,
