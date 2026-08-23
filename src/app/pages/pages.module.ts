@@ -16,6 +16,7 @@ import { PromisesComponent } from './promises/promises.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UsersComponent } from './management/users/users.component';
+import { HospitalsComponent } from './management/hospitals/hospitals.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { UsersComponent } from './management/users/users.component';
     RxjsComponent,
     ProfileComponent,
     UsersComponent,
+    HospitalsComponent,
   ],
   imports: [
     CommonModule,

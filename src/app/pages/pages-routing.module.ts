@@ -13,6 +13,7 @@ import { PromisesComponent } from './promises/promises.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UsersComponent } from './management/users/users.component';
+import { HospitalsComponent } from './management/hospitals/hospitals.component';
 
 const routes: Routes = [
   {
@@ -49,7 +50,16 @@ const routes: Routes = [
       },
 
       // Management
-      { path: 'users', component: UsersComponent, title: 'Application users' },
+      {
+        path: 'users',
+        component: UsersComponent,
+        data: { title: 'Management users' },
+      },
+      {
+        path: 'hospitals',
+        component: HospitalsComponent,
+        data: { title: 'Management Hospitals' },
+      },
     ],
   },
 ];
