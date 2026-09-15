@@ -31,10 +31,24 @@ export class HospitalService {
     };
   }
 
+  urlBase(id?: string) {
+    if (id) return `${base_url}/hospitals/${id}`;
+    return `${base_url}/hospitals`;
+  }
+
   loadHospitals() {
-    const url = `${base_url}/hospitals`;
     return this.http
-      .get<LoadHospital>(url, this.headers)
+      .get<LoadHospital>(this.urlBase(), this.headers)
       .pipe(map((resp) => resp.hospitals));
+  }
+
+  createHospital(name: string) {
+    return this.http.post(this.urlBase(), { name }, this.headers);
+  }
+  updateHospital(_id: string, name: string) {
+    return this.http.put(this.urlBase(_id), { name }, this.headers);
+  }
+  deleteHospital(_id: string) {
+    return this.http.delete(this.urlBase(_id), this.headers);
   }
 }
