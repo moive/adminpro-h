@@ -34,24 +34,24 @@ export class AlertService {
       title,
       text,
       showCancelButton: true,
-      confirmButtonText: 'Sí',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'Cancel',
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
     });
   }
 
   async confirmDelete(
-    title: string = '¿Estás seguro?',
+    title: string = 'Are you sure?',
     text?: string,
   ): Promise<boolean> {
     const result = await this.showAlert({
       icon: 'warning',
       title,
-      text: text || 'Esta acción no se puede deshacer',
+      html: text || 'This action cannot be undone.',
       showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'Cancel',
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6',
     });
