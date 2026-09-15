@@ -59,6 +59,30 @@ export class AlertService {
     return result.isConfirmed;
   }
 
+  async inputText(
+    title?: string,
+    placelholder?: string,
+    label?: string,
+  ): Promise<string | undefined> {
+    const result = await this.showAlert({
+      title: title ?? 'Input Information',
+      input: 'text',
+      inputLabel: label ?? 'Your text',
+      inputPlaceholder: placelholder ?? 'Enter your text',
+      inputValidator: (value) => {
+        if (!value.trim()) {
+          return 'Hospital name is required';
+        }
+        return null;
+      },
+      confirmButtonText: 'Save',
+      showCancelButton: true,
+      cancelButtonText: 'Cancel',
+    });
+
+    return result.value;
+  }
+
   // Método público para casos personalizados
   custom(options: SweetAlertOptions): Promise<SweetAlertResult> {
     return this.showAlert(options);
