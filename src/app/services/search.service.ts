@@ -1,10 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { User } from '../models/user.model';
+import { Hospital } from '../models/hospital.model';
 
 const base_url = environment.baseUrl;
+
+interface SearchResponse<T> {
+  results: T[];
+}
 
 @Injectable({
   providedIn: 'root',
@@ -38,14 +43,23 @@ export class SearchService {
         ),
     );
   }
+  private transformHospitals(result: any[]): Hospital[] {
+    return result;
+  }
 
-  search(type: 'users' | 'doctors' | 'hospitals', q: string) {
+  search<T>(
+    type: 'users' | 'doctors' | 'hospitals',
+    q: string,
+  ): Observable<T[]> {
     const url = `${base_url}/full-search/collection/${type}/${q}`;
-    return this.http.get(url, this.headers).pipe(
+    return this.http.get<SearchResponse<any>>(url, this.headers).pipe(
       map((resp: any) => {
         switch (type) {
           case 'users':
-            return this.transformUsers(resp.results);
+            return this.transformUsers(resp.results) as T[];
+
+          case 'hospitals':
+            return this.transformHospitals(resp.results) as T[];
 
           default:
             return [];

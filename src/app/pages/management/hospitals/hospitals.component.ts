@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { finalize } from 'rxjs';
+import { delay, finalize } from 'rxjs';
 
 import { Hospital } from '@/app/models/hospital.model';
-import { AlertService, HospitalService } from '@/app/services';
+import {
+  AlertService,
+  HospitalService,
+  ModalImageService,
+  SearchService,
+} from '@/app/services';
 
 @Component({
   selector: 'app-hospitals',
@@ -19,10 +24,13 @@ export class HospitalsComponent implements OnInit {
   constructor(
     private hospitalService: HospitalService,
     private alertService: AlertService,
+    private searchService: SearchService,
+    private modalImageService: ModalImageService,
   ) {}
   ngOnInit(): void {
     this.loadHospitals();
     console.log(this.loading);
+    this.onEmitUploadImage();
   }
 
   loadHospitals() {
@@ -104,5 +112,24 @@ export class HospitalsComponent implements OnInit {
         this.loadHospitals();
       },
     });
+  }
+
+  search(term: string) {
+    if (term.trim().length === 0) {
+      return this.loadHospitals();
+    }
+
+    this.searchService.search<Hospital>('hospitals', term).subscribe((resp) => {
+      this.hospitals = resp;
+    });
+  }
+  openModal(hospital: Hospital) {
+    this.modalImageService.openModal('hospitals', hospital._id!, hospital.img);
+  }
+
+  onEmitUploadImage() {
+    this.modalImageService.newImage
+      .pipe(delay(100))
+      .subscribe(() => this.loadHospitals());
   }
 }

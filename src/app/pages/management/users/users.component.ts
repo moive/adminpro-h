@@ -119,7 +119,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.searchService.search('users', q).subscribe((users) => {
+    this.searchService.search<User>('users', q).subscribe((users) => {
       this.users = users;
     });
   }
